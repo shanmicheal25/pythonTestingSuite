@@ -10,7 +10,6 @@ rm *.zip && echo "$(tput setaf 2)Removed zip files$(tput sgr 0)"
 rsync -a --exclude="./toDeploy/" ./* toDeploy && echo "$(tput setaf 2)Copied files for deploying$(tput sgr 0)"
 cd toDeploy
 python3 -m pip install --target=./ pytest-json-report --upgrade
-rm lambdaFunc.zip && echo "$(tput setaf 2)Removed lambdaFunc zip file$(tput sgr 0)"
 
 echo
 echo "***************************"
