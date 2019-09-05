@@ -20,12 +20,13 @@ def getIndexPage():
       href="https://unpkg.com/vue-material@beta/dist/theme/default.css"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.css" />
+    <link rel="stylesheet" href="https://codemirror.net/addon/scroll/simplescrollbars.css"/>
   </head>
     <body>
     <div id="app">
         <div class="md-layout">
           <div class="md-layout-item">
-            <h1 style="padding: 0px;">Python - Learn Unit Testing</h1>
+            <h1 style="padding: 0px; margin-top:0.5rem; margin-bottom:0.5rem;">Python - Learn Unit Testing</h1>
           </div>
         </div>
         <md-tabs>
@@ -40,6 +41,7 @@ def getIndexPage():
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/python/python.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-codemirror@4.0.6/dist/vue-codemirror.min.js"></script>
+    <script src="https://codemirror.net/addon/scroll/simplescrollbars.js"></script>
     <script>
     Vue.use(VueMaterial.default)
     Vue.use(window.VueCodemirror)
@@ -54,17 +56,20 @@ def getIndexPage():
             isCorrectColor: "#ff5252",
             cmOptions: {
               mode: "python",
-              lineNumbers: true
+              lineNumbers: true,
+              scrollbarStyle: "simple"
             },
             cmReadOnly: {
               lineNumbers: true,
               mode:  "python",
-              readOnly: true
+              readOnly: true,
+              scrollbarStyle: "simple"
             },
             cmInstructions:{
               lineNumbers: false,
               mode: "text",
-              readOnly: true
+              readOnly: true,
+              scrollbarStyle: "simple"
             }
         }
         },
@@ -103,7 +108,7 @@ def getIndexPage():
                   <md-card class="input-card">\
                     <md-card-header>\
                       <md-card-header-text\
-                        ><div class="md-title">Introduction</div>\
+                        ><div class="md-subheading"><b>Introduction</b></div>\
                       </md-card-header-text>\
                     </md-card-header>\
                     <md-card-content>\
@@ -119,12 +124,12 @@ def getIndexPage():
                   <md-card class="input-card">\
                     <md-card-header>\
                       <md-card-header-text\
-                        ><div class="md-title">Tests</div>\
+                        ><div class="md-subheading"><b>Tests</b></div>\
                       </md-card-header-text>\
                     </md-card-header>\
                     <md-card-content>\
                       <codemirror\
-                        class="instructionTextarea"\
+                        class="shownTextarea"\
                         v-model="layoutItems[0].vModel"\
                         :options="cmReadOnly"\
                       ></codemirror>\
@@ -140,8 +145,7 @@ def getIndexPage():
                   <md-card class="input-card">\
                     <md-card-header>\
                       <md-card-header-text\
-                        ><div class="md-title">Editable code</div>\
-                        <div class="md-subheading">Your code goes below</div>\
+                        ><div class="md-subheading"><b>Editable code</b></div>\
                       </md-card-header-text>\
                       <button class="button" id="submit" v-on:click="postContents">\
                         <span>{{ submitText }}</span>\
@@ -158,9 +162,9 @@ def getIndexPage():
                     </md-card-header>\
                     <md-card-content>\
                       <codemirror\
-                        class="instructionTextarea"\
+                        class="editableTextarea"\
                         v-model="layoutItems[1].vModel"\
-                        :options="cmReadOnly"\
+                        :options="cmOptions"\
                       ></codemirror>\
                     </md-card-content>\
                   </md-card>\
@@ -169,15 +173,14 @@ def getIndexPage():
                   <md-card>\
                     <md-card-header>\
                       <md-card-header-text>\
-                        <div class="md-title">Output</div>\
-                        <div class="md-subheading">Test results</div>\
+                        <div class="md-subheading"><b>Output</b></div>\
                       </md-card-header-text>\
                     </md-card-header>\
                     <md-card-content>\
                       <md-field>\
-                        <md-tabs>\
+                        <md-tabs class="output-tabs">\
                           <md-tab id="tab-htmlResults" md-label="HTML results">\
-                            <div class="output-tab" v-html="answer.htmlFeedback"></div>\
+                            <div class="output-tab" v-html="answer.htmlFeedback" style="overflow: scroll;"></div>\
                           </md-tab>\
                           <md-tab id="tab-jsonResults" md-label="JSON results">\
                             <md-textarea\
@@ -233,7 +236,7 @@ def getIndexPage():
                 ], status:" 🔴"},
                 {name:"question 5", layoutItems: [
                   {vModel: "import unittest\\nimport example\\nclass TestExample(unittest.TestCase):\\n\\tdef test_prime(self):\\n\\t\\tself.assertEqual(example.checkPrime(3), \\"PRIME\\")\\n\\tdef test_notPrime(self):\\n\\t\\tself.assertEqual(example.checkPrime(10), \\"NOT PRIME\\")\\n\\tdef test_val_one(self):\\n\\t\\tself.assertEqual(example.checkPrime(1), \\"NOT PRIME\\")\\n\\tdef test_negative(self):\\n\\t\\tself.assertEqual(example.checkPrime(-3), \\"NOT PRIME\\")\\nif __name__ == '__main__':\\n\\tunittest.main()"},
-                  {vModel: "def checkPrime(num):\\n  # If given number is greater than 1 \\n  if num > 1: \\n    for i in range(2, num//2): \\n      # If num is divisible by any number between  \\n      # 2 and n / 2, it is not prime  \\n      if (num % i) == 0: \\n        return \\"NOT PRIME\\" \\n    else: \\n      #return \\"PRIME\\" \\n  else: \\n    #return \\"NOT PRIME\\""},    
+                  {vModel: "def checkPrime(num):\\n  # If given number is greater than 1 \\n  if num > 1: \\n    for i in range(2, num//2): \\n      # If num is divisible by any number between  \\n      # 2 and n / 2, it is not prime  \\n      if (num % i) == 0: \\n        return \\"NOT PRIME\\" \\n    else: \\n      return #\\"PRIME\\" \\n  else: \\n    return #\\"NOT PRIME\\""},    
                   {vModel: "test"},
                   {vModel: "Edit your code to pass the tests! All the best!"}                 
                 ], status:" 🔴"}  
@@ -266,18 +269,15 @@ def getIndexPage():
       width: 100%;
     }
     .md-tab {
-      min-height: 800px;
+      min-height: 300px;
     }
     .md-content {
-      min-height: 1200px !important;
+      min-height: 200px !important;
     }
     .md-card {
       overflow: hidden;
     }
-    .input-card {
-      height: 400px;
-    }
-    .output-card > .md-card > .md-card-content > .md-field {
+    .md-field {
       padding-top: 0px;
     }
     .button {
@@ -318,13 +318,21 @@ def getIndexPage():
       display: none;
     }
     .output-tab {
-      min-height: 1000px !important;
+      min-height: 150px !important;
+      max-height: 150px !important;
+      overflow: scroll;
     }
     h1{
-        margin-top: 1rem;
-        padding:20px;
-        text-align: center
+      margin-top: 1rem;
+      padding:20px;
+      text-align: center
     }  
+    .CodeMirror {
+      height: 150px;
+    }
+    .CodeMirror-overlayscroll-vertical {
+      display: block !important;
+    }
   </style>
 </html>
     """
