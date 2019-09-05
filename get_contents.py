@@ -53,12 +53,17 @@ def getIndexPage():
             submitText: "Submit",
             isCorrectColor: "#ff5252",
             cmOptions: {
-              mode: 'python',
+              mode: "python",
               lineNumbers: true
             },
             cmReadOnly: {
               lineNumbers: true,
               mode:  "python",
+              readOnly: true
+            },
+            cmInstructions:{
+              lineNumbers: false,
+              mode: "text",
               readOnly: true
             }
         }
@@ -91,68 +96,111 @@ def getIndexPage():
             })
          }
         },
-        template: '<div class="md-layout"><div class="md-layout-item md-size-100"><md-card class="input-card"><md-card-header>\
-              <md-card-header-text>\
-                <div class="md-layout md-gutter">\
-                  <div class="md-layout-item md-size-50">\
-                    <button class="button" id="submit" v-on:click="postContents">\
-                      <span>{{ submitText }}</span>\
-                    </button>\
-                    <button class="button" v-bind:class="{ hidden: isHidden}" v-bind:style="{ background: isCorrectColor}">\
-                        <span>{{answer && answer.isComplete ? "Passed" : "Failed"}}</span>\
-                    </button>\
-                  </div>\
-                </div>\
-              </md-card-header-text>\
-            </md-card-header>\
-            <md-card-content>\
+        template: '<div class="md-layout">\
+            <div class="md-layout-item md-size-100">\
               <div class="md-layout md-gutter">\
                 <div class="md-layout-item md-size-50">\
-                  <div style="border: 1px solid #eeeeee">\
-                    <label><b>[Edit your code] : example.py</b></label>\
-                    <codemirror class="editableTextarea" v-model="layoutItems[1].vModel" :options="cmOptions"></codemirror>\
-                  </div>\
+                  <md-card class="input-card">\
+                    <md-card-header>\
+                      <md-card-header-text\
+                        ><div class="md-title">Introduction</div>\
+                      </md-card-header-text>\
+                    </md-card-header>\
+                    <md-card-content>\
+                      <codemirror\
+                        class="instructionTextarea"\
+                        v-model="layoutItems[3].vModel"\
+                        :options="cmInstructions"\
+                      ></codemirror>\
+                    </md-card-content>\
+                  </md-card>\
                 </div>\
                 <div class="md-layout-item md-size-50">\
-                  <div style="border: 1px solid #eeeeee">\
-                    <label><b>testExample.py</b></label>\
-                    <codemirror class="shownTextarea" v-model="layoutItems[0].vModel" :options="cmOptions"></codemirror>\
-                  </div>\
+                  <md-card class="input-card">\
+                    <md-card-header>\
+                      <md-card-header-text\
+                        ><div class="md-title">Tests</div>\
+                      </md-card-header-text>\
+                    </md-card-header>\
+                    <md-card-content>\
+                      <codemirror\
+                        class="instructionTextarea"\
+                        v-model="layoutItems[0].vModel"\
+                        :options="cmReadOnly"\
+                      ></codemirror>\
+                    </md-card-content>\
+                  </md-card>\
                 </div>\
-                <!--<div class="md-layout-item md-size-33">\
-                  <div style="border: 1px solid #eeeeee">\
-                    <label><b>config</b></label>\
-                    <codemirror class="hiddenTextarea" v-model="layoutItems[2].vModel" :options="cmReadOnly"></codemirror>\
-                  </div>\
-                </div>-->\
               </div>\
-            </md-card-content>\
-          </md-card>\
-        </div>\
-        <div class="md-layout-item md-size-100 output-card">\
-          <md-card>\
-            <md-card-header>\
-              <md-card-header-text>\
-                <div class="md-title">Results</div>\
-              </md-card-header-text>\
-            </md-card-header>\
-            <md-card-content>\
-              <md-field>\
-                <md-tabs>\
-                  <md-tab id="tab-htmlResults" md-label="HTML results">\
-                    <div class="output-tab" v-html="answer.htmlFeedback"></div>\
-                  </md-tab>\
-                  <md-tab id="tab-jsonResults" md-label="JSON results">\
-                    <md-textarea class="output-tab" v-model="answer.jsonFeedback" readonly></md-textarea>\
-                  </md-tab>\
-                  <md-tab id="tab-textResults" md-label="Text results">\
-                    <md-textarea class="output-tab" v-model="answer.textFeedback" readonly ></md-textarea>\
-                  </md-tab>\
-                </md-tabs>\
-              </md-field>\
-            </md-card-content>\
-          </md-card>\
-        </div></div>'
+            </div>\
+            <br />\
+            <div class="md-layout-item md-size-100" style="margin-top:10px;">\
+              <div class="md-layout md-gutter">\
+                <div class="md-layout-item md-size-50">\
+                  <md-card class="input-card">\
+                    <md-card-header>\
+                      <md-card-header-text\
+                        ><div class="md-title">Editable code</div>\
+                        <div class="md-subheading">Your code goes below</div>\
+                      </md-card-header-text>\
+                      <button class="button" id="submit" v-on:click="postContents">\
+                        <span>{{ submitText }}</span>\
+                      </button>\
+                      <button\
+                        class="button"\
+                        v-bind:class="{ hidden: isHidden}"\
+                        v-bind:style="{ background: isCorrectColor}"\
+                      >\
+                        <span>{{\
+                          answer && answer.isComplete ? "Passed" : "Failed"\
+                        }}</span>\
+                      </button>\
+                    </md-card-header>\
+                    <md-card-content>\
+                      <codemirror\
+                        class="instructionTextarea"\
+                        v-model="layoutItems[1].vModel"\
+                        :options="cmReadOnly"\
+                      ></codemirror>\
+                    </md-card-content>\
+                  </md-card>\
+                </div>\
+                <div class="md-layout-item md-size-50">\
+                  <md-card>\
+                    <md-card-header>\
+                      <md-card-header-text>\
+                        <div class="md-title">Output</div>\
+                        <div class="md-subheading">Test results</div>\
+                      </md-card-header-text>\
+                    </md-card-header>\
+                    <md-card-content>\
+                      <md-field>\
+                        <md-tabs>\
+                          <md-tab id="tab-htmlResults" md-label="HTML results">\
+                            <div class="output-tab" v-html="answer.htmlFeedback"></div>\
+                          </md-tab>\
+                          <md-tab id="tab-jsonResults" md-label="JSON results">\
+                            <md-textarea\
+                              class="output-tab"\
+                              v-model="answer.jsonFeedback"\
+                              readonly\
+                            ></md-textarea>\
+                          </md-tab>\
+                          <md-tab id="tab-textResults" md-label="Text results">\
+                            <md-textarea\
+                              class="output-tab"\
+                              v-model="answer.textFeedback"\
+                              readonly\
+                            ></md-textarea>\
+                          </md-tab>\
+                        </md-tabs>\
+                      </md-field>\
+                    </md-card-content>\
+                  </md-card>\
+                </div>\
+              </div>\
+            </div>\
+          </div>\'
     })
     new Vue({
       el: "#app",
@@ -162,27 +210,32 @@ def getIndexPage():
                 {name:"question 1", layoutItems: [
                   {vModel: "import unittest\\nimport example\\nclass TestExample(unittest.TestCase):\\n\\tdef test_positive_num(self):\\n\\t\\tself.assertEqual(example.sum(2,2), 4)\\n\\tdef test_zero(self):\\n\\t\\tself.assertEqual(example.sum(0,0), 0)\\n\\tdef test_negative_num(self):\\n\\t\\tself.assertEqual(example.sum(-1,0), -1)\\n\\nif __name__ == '__main__':\\n\\tunittest.main()"},
                   {vModel: "def sum(a,b):\\n    return a-b"},    
-                  {vModel: "test"}                
+                  {vModel: "test"},
+                  {vModel: "Edit your code to pass the tests! All the best!"}                
                 ], status:" 🔴"},
                 {name:"question 2", layoutItems: [
                   {vModel: "import unittest\\nimport example\\nclass TestExample(unittest.TestCase):\\n\\tdef test_even(self):\\n\\t\\tself.assertEqual(example.evenOrOdd(2), \\"EVEN\\")\\n\\tdef test_odd(self):\\n\\t\\tself.assertEqual(example.evenOrOdd(3), \\"ODD\\")\\n\\tdef test_negative_val(self):\\n\\t\\tself.assertEqual(example.evenOrOdd(-1), \\"ODD\\")\\n\\t\\tself.assertEqual(example.evenOrOdd(-2), \\"EVEN\\")\\nif __name__ == '__main__':\\n\\tunittest.main()"},
                   {vModel: "def evenOrOdd(num):\\n    if num%2 == 0:\\n        return \\"ODD\\"\\n    else:\\n        return \\"EVEN\\""},    
-                  {vModel: "test"} 
+                  {vModel: "test"},
+                  {vModel: "Edit your code to pass the tests! All the best!"}  
                 ], status:" 🔴"},    
                 {name:"question 3", layoutItems: [
                   {vModel: "import unittest\\nimport example\\nclass TestExample(unittest.TestCase):\\n\\tdef test_zero(self):\\n\\t\\tself.assertEqual(example.factorial(0), 1)\\n\\tdef test_interger_val(self):\\n\\t\\tself.assertEqual(example.factorial(3), 6)\\n\\t\\tself.assertEqual(example.factorial(4), 24)\\n\\tdef test_negative_val(self):\\n\\t\\twith self.assertRaises(ValueError):\\n\\t\\t\\texample.factorial(-2)\\nif __name__ == '__main__':\\n\\tunittest.main()"},
                   {vModel: "def factorial(n):\\n    fact = 1\\n    #if n < 0:\\n    #    raise ValueError(\\"Factorial not defined for negative values\\")\\n    for i in range(1,n+1): \\n        fact = fact * i \\n    return fact"},    
-                  {vModel: "test"}               
+                  {vModel: "test"},
+                  {vModel: "Edit your code to pass the tests! All the best!"}                
                 ], status:" 🔴"},
                 {name:"question 4", layoutItems: [
                   {vModel: "import unittest\\nimport example\\nclass TestExample(unittest.TestCase):\\n\\tdef test_fizz(self):\\n\\t\\tself.assertEqual(example.fizzBuzz(3), \\"Fizz\\")\\n\\tdef test_buzz(self):\\n\\t\\tself.assertEqual(example.fizzBuzz(10), \\"Buzz\\")\\n\\tdef test_fizzbuzz(self):\\n\\t\\tself.assertEqual(example.fizzBuzz(15), \\"FizzBuzz\\")\\n\\tdef test_false_val(self):\\n\\t\\tself.assertEqual(example.fizzBuzz(4), 4)\\nif __name__ == '__main__':\\n\\tunittest.main()"},
                   {vModel: "def fizzBuzz(num):\\n  if num % 3 == 0 and num % 5 == 0:\\n    return 'FizzBuzz'\\n  elif num % 3 == 0:\\n    return 'Fizz'\\n  elif num % 5 == 0:\\n    return 'Buzz'\\n  else:\\n    return \\"No way\\""},    
-                  {vModel: "test"}                
+                  {vModel: "test"},
+                  {vModel: "Edit your code to pass the tests! All the best!"}                 
                 ], status:" 🔴"},
                 {name:"question 5", layoutItems: [
                   {vModel: "import unittest\\nimport example\\nclass TestExample(unittest.TestCase):\\n\\tdef test_prime(self):\\n\\t\\tself.assertEqual(example.checkPrime(3), \\"PRIME\\")\\n\\tdef test_notPrime(self):\\n\\t\\tself.assertEqual(example.checkPrime(10), \\"NOT PRIME\\")\\n\\tdef test_val_one(self):\\n\\t\\tself.assertEqual(example.checkPrime(1), \\"NOT PRIME\\")\\n\\tdef test_negative(self):\\n\\t\\tself.assertEqual(example.checkPrime(-3), \\"NOT PRIME\\")\\nif __name__ == '__main__':\\n\\tunittest.main()"},
                   {vModel: "def checkPrime(num):\\n  # If given number is greater than 1 \\n  if num > 1: \\n    for i in range(2, num//2): \\n      # If num is divisible by any number between  \\n      # 2 and n / 2, it is not prime  \\n      if (num % i) == 0: \\n        return \\"NOT PRIME\\" \\n    else: \\n      #return \\"PRIME\\" \\n  else: \\n    #return \\"NOT PRIME\\""},    
-                  {vModel: "test"}                
+                  {vModel: "test"},
+                  {vModel: "Edit your code to pass the tests! All the best!"}                 
                 ], status:" 🔴"}  
                 ]
             }
