@@ -49,7 +49,7 @@ def execute():
     results = {
         "isComplete": isComplete,
         "htmlFeedback": htmlOutput,
-        "jsonFeedback": json.dumps(jsonOutput, indent=4, sort_keys=True),
+        "jsonFeedback": jsonOutput,
         "textFeedback": unitTestResults
     }
 
