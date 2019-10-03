@@ -16,32 +16,46 @@ Python Testing suite enables a user to create an AWS Lambda function with Python
 | **Timeout**       | 40 sec                      |
 | **Trigger**       | API Gateway                 |
 
+*** 
+
 ## Deployment
-User can deploy using - 
-1. Local environment 
-2. AWS Cloud 9 to deploy from the cloud.
+This repository supports auto-deployment of the lambda function on every push to this project using GitHub Actions.
+### Prerequisite -
+1. Create an AWS S3 bucket with permissions to access objects publically.
 
-### Additional steps for local environment deployment -
-1. [Install AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
-   - Verify aws-cli installation 
-     - `aws --version`
-2. [Configure aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
-   - `$ aws configure`
-   - `> AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE`
-   - `> AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`
-   - `> Default region name [None]: us-east-1`
-   - `> Default output format [None]: json`
+   Here's an example S3 bucket with the required permissions -
+   ![S3 bucket policy](./docs/Bucket-policy.png)
+   
+### Steps to deploy -
+1. Fork the repository and clone the contents
+   ```bash
+   git clone https://github.com/<your-username>/vueTestingSuite
+   ```
+2. Navigate to Repository settings on the GitHub console > Click on secrets
+3. Add the following secret key value pairs - 
+   ```python
+   AWS_ACCESS_KEY_ID = # AWS users credential details
+   AWS_SECRET_ACCESS_KEY = # AWS users credential details
+   AWS_SESSION_TOKEN = # AWS Educate users credential details
+   BUCKET_NAME = # S3 Bucket name where objects can be publically accessible
+   ```
+   
+   The following Github secrets must be created -
+   ![Github Secrets](./docs/Github-secrets.png)
+   
+4. Make changes to your Lambda function code in the src directory. Commit and push
+   ```bash
+   git add .
+   git commit -m "Update changes"
+   git push
+   ```
+3. On push, GitHub Action is trigerred and the status of the deployments can be viewed under the actions tab.
+   ![Github Secrets](./docs/Github-actions.png)
 
-**Note -** 
-- For AWS Educate users
-   - Copy and paste your AWS CLI credentials from account details into ~/.aws/credentials
-   - After session token expiry, update the same credentials files with the latest details.
+***
 
-### Steps for deployment -
-1. Clone the repository
-2. Navigate to the project folder
-   - `cd pythonTestingSuite`
-3. Use the deploy script to update your AWS lambda function "pythonTestingSuite". User can alter the script to point to the name of their lambda function incase of differences in lambda names.
-   - `./deploy.sh`
-   - The deployment script downloads/installs packages along with the packaging project contents into a zipped file. This zipped file is then deployed to update the existing lambda function.
-4. Navigate to the API endpoint of the AWS Lambda function to view the changes.
+**Note:** 
+For AWS Educate Users, users credentials expire and will have to be overwritten in the project secrets settings on github in case of expiry before an update.
+
+AWS Educate user credentials - 
+![AWS Educate credentials](./docs/Aws-Educate-credentials.png)
