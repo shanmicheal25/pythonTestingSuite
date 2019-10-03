@@ -11,7 +11,6 @@ Python Testing suite enables a user to create an AWS Lambda function with Python
 | ------------------|:---------------------------:|
 | **Function name** | pythonTestingSuite          |
 | **Runtime**       | Python 3.7                  |
-| **Execution role**| lambda_basic_execution role |
 | **Memory (MB)**   | 128 MB                      |
 | **Timeout**       | 40 sec                      |
 | **Trigger**       | API Gateway                 |
